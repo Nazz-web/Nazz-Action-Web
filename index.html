@@ -1,294 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nazz Official</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: glow 2s infinite alternate;
-        }
-
-        .btn-container {
-            position: relative;
-            margin-top: 2rem;
-        }
-
-        .nazz-btn {
-            position: relative;
-            padding: 1rem 2.5rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: white;
-            background: linear-gradient(45deg, #ff00cc, #3333ff);
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            outline: none;
-            overflow: hidden;
-            z-index: 1;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .nazz-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .nazz-btn:active {
-            transform: translateY(0);
-        }
-
-        .nazz-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-            z-index: -1;
-        }
-
-        .nazz-btn:hover::before {
-            left: 100%;
-        }
-
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            }
-            to {
-                text-shadow: 0 0 20px #ff00cc, 0 0 30px #3333ff;
-            }
-        }
-
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-    </style>
-</head>
-<body>
-    <div class="particles" id="particles"></div>
-    <h1 class="floating">Nazz Official</h1>
-    <div class="btn-container">
-        <button class="nazz-btn" id="magicBtn">Klik Saya!</button>
-    </div>
-
-    <script>
-        const btn = document.getElementById('magicBtn');
-        const particlesContainer = document.getElementById('particles');
-        
-        // Efek partikel saat tombol diklik
-        btn.addEventListener('click', function(e) {
-            // Efek ripple
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple');
-            this.appendChild(ripple);
-            
-            // Posisi ripple
-            const x = e.clientX - e.target.getBoundingClientRect().left;
-            const y = e.clientY - e.target.getBoundingClientRect().top;
-            
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            
-            // Hapus ripple setelah animasi selesai
-            setTimeout(() => {
-                ripple.remove();
-            }, 1000);
-            
-            // Buat partikel
-            createParticles(e.clientX, e.clientY);
-            
-            // Animasi tombol
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-        
-        function createParticles(x, y) {
-            const colors = ['#ff00cc', '#3333ff', '#00ffff', '#ffff00', '#ff9900'];
-            
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 10 + 5;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.backgroundColor = color;
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
-                
-                particlesContainer.appendChild(particle);
-                
-                const animation = particle.animate([
-                    { transform: `translate(0, 0)`, opacity: 1 },
-                    { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 1000 + 500,
-                    easing: 'cubic-bezier(0,0.2,0.8,1)'
-                });
-                
-                animation.onfinish = () => {
-                    particle.remove();
-                };
-            }
-        }
-        
-        // Efek partikel background
-        function createBackgroundParticles() {
-            const containerWidth = window.innerWidth;
-            const containerHeight = window.innerHeight;
-            
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 5 + 1;
-                const posX = Math.random() * containerWidth;
-                const posY = Math.random() * containerHeight;
-                const opacity = Math.random() * 0.5 + 0.1;
-                const delay = Math.random() * 5;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}px`;
-                particle.style.top = `${posY}px`;
-                particle.style.opacity = opacity;
-                particle.style.animation = `float ${Math.random() * 10 + 5}s ease-in-out infinite`;
-                particle.style.animationDelay = `${delay}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
-        // Jalankan saat halaman dimuat
-        window.onload = createBackgroundParticles;
-    </script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Information</title>
+    <title>Rafi Hosting - Jual Panel, Script & Top Up Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
+            margin: 0;
             padding: 20px;
+            background-color: #f5f5f5;
             color: #333;
         }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        .contact-box {
-            background-color: #f9f9f9;
-            border-radius: 8px;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
             padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        .contact-item {
-            margin: 15px 0;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        .contact-item:last-child {
-            border-bottom: none;
-        }
-        .label {
-            font-weight: bold;
+        h1 {
+            text-align: center;
             color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
         }
-        a {
+        h2 {
             color: #3498db;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        .product-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .product-item {
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .product-name {
+            font-weight: bold;
+        }
+        .product-price {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .contact {
+            background: #2ecc71;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        .contact a {
+            color: white;
             text-decoration: none;
         }
-        a:hover {
-            text-decoration: underline;
-        }
-        .whatsapp { color: #25D366; }
-        .telegram { color: #0088cc; }
     </style>
 </head>
 <body>
-    <h1>Contact Information</h1>
-    
-    <div class="contact-box">
-        <div class="contact-item">
-            <span class="label whatsapp">WhatsApp Number:</span><br>
-            <a href="https://wa.me/6285713213310" class="whatsapp">+62 857-1321-3310</a>
-        </div>
+    <div class="container">
+        <h1>Rafi Hosting</h1>
         
-        <div class="contact-item">
-            <span class="label telegram">Telegram:</span><br>
-            <a href="https://t.me/YANGYTTAAJA" class="telegram">t.me/YANGYTTAAJA</a>
-        </div>
+        <h2>List Panel</h2>
+        <ul class="product-list">
+            <li class="product-item">
+                <span class="product-name">Panel Reseller</span>
+                <span class="product-price">Rp 5.000</span>
+            </li>
+            <li class="product-item">
+                <span class="product-name">Admin Panel</span>
+                <span class="product-price">Rp 6.000</span>
+            </li>
+            <li class="product-item">
+                <span class="product-name">Patner Panel</span>
+                <span class="product-price">Rp 9.000</span>
+            </li>
+        </ul>
         
-        <div class="contact-item">
-            <span class="label whatsapp">WhatsApp Group:</span><br>
-            <a href="https://chat.whatsapp.com/GZqGEQuCxRr37X6dJzdRb1" class="whatsapp">Join WhatsApp Group</a>
-        </div>
+        <h2>Script</h2>
+        <ul class="product-list">
+            <li class="product-item">
+                <span class="product-name">SC Game</span>
+                <span class="product-price">Rp 20.000</span>
+            </li>
+            <li class="product-item">
+                <span class="product-name">SC Bug</span>
+                <span class="product-price">Rp 20.000</span>
+            </li>
+        </ul>
         
-        <div class="contact-item">
-            <span class="label whatsapp">WhatsApp Channel:</span><br>
-            <a href="https://whatsapp.com/channel/0029VbAR55QChq6LEmvlDe1s" class="whatsapp">Join WhatsApp Channel</a>
+        <h2>Top Up Game</h2>
+        <ul class="product-list">
+            <li class="product-item">
+                <span class="product-name">100 Robux</span>
+                <span class="product-price">Rp 10.000</span>
+            </li>
+            <li class="product-item">
+                <span class="product-name">200 Robux</span>
+                <span class="product-price">Rp 20.000</span>
+            </li>
+        </ul>
+        
+        <div class="contact">
+            <p>Untuk pemesanan, silahkan hubungi:</p>
+            <p><a href="https://wa.me/6285883438683">6285883438683</a> (Klik untuk chat WhatsApp)</p>
         </div>
     </div>
-    
-    <footer style="text-align: center; margin-top: 30px; color: #7f8c8d;">
-        <p>&copy; 2023 Contact Page. All rights reserved.</p>
-    </footer>
-</body>
-</html>
 </body>
 </html>
